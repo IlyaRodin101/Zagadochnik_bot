@@ -13,7 +13,7 @@
 ##  Технологии
 
 *   **Язык**: Java (рекомендуется JDK 11 или выше)
-*   **Библиотека**: [TelegramBots](https://github.com/rubenlagus/TelegramBots) (Rubenlagus)
+*   **Библиотека**: [TelegramBots](https://github.com/rubenlagus/TelegramBots) 
 *   **Сборка**: Maven
 
 ##  Запуск
