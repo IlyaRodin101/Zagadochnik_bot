@@ -7,15 +7,15 @@ import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
 import org.telegram.telegrambots.longpolling.util.DefaultLongPollingUpdateConsumer;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.TelegramClient;
-import ru.urfu.riddlebot.service.Message;
-import ru.urfu.riddlebot.service.MessageProcessingService;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.TelegramClient;
+import ru.urfu.riddlebot.service.Message;
+import ru.urfu.riddlebot.service.MessageProcessingService;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public final class TelegramBot extends DefaultLongPollingUpdateConsumer implemen
             LOGGER.info("Бот запущен :)");
             Thread.currentThread().join();
         } catch (Exception e) {
-            LOGGER.error("сообщение", e);
+            LOGGER.error("Бот не запустился", e);
         }
     }
 
@@ -71,7 +71,7 @@ public final class TelegramBot extends DefaultLongPollingUpdateConsumer implemen
         try {
             telegramClient.execute(sendMessage);
         } catch (TelegramApiException e) {
-            LOGGER.error("сообщение", e);
+            LOGGER.error("Не удалось отправить сообщение", e);
         }
 
     }
