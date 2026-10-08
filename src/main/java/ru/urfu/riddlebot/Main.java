@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.urfu.riddlebot.bot.TelegramBot;
 import ru.urfu.riddlebot.domain.RiddleBank;
-import ru.urfu.riddlebot.service.MessageProcessingService;
 import ru.urfu.riddlebot.service.RiddleMessageProcessingService;
 
 public final class Main {
