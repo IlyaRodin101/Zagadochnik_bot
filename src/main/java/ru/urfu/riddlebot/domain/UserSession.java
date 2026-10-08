@@ -7,7 +7,7 @@ public final class UserSession {
         return currentRiddle;
     }
 
-    public void setCurrentRiddle(Riddle riddle){
+    public void setCurrentRiddle(Riddle riddle) {
         currentRiddle = riddle;
     }
 }

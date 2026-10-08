@@ -18,15 +18,15 @@ public final class Main {
         RiddleBank riddleBank = new RiddleBank();
         RiddleMessageProcessingService riddleMessageProcessingService = new RiddleMessageProcessingService(riddleBank);
         String token = System.getenv(BOT_TOKEN);
-        if(token == null){
+        if (token == null) {
             LOGGER.error("Отсутствует токен!");
             return;
         }
-        try{
-            TelegramBot bot = new TelegramBot(token,riddleMessageProcessingService);
+        try {
+            TelegramBot bot = new TelegramBot(token, riddleMessageProcessingService);
             bot.start();
         } catch (Exception e) {
-            LOGGER.error("сообщение",e);
+            LOGGER.error("сообщение", e);
         }
     }
 }

@@ -7,13 +7,14 @@ import java.util.Random;
 public class RiddleBank {
     private final Map<Difficulty, List<Riddle>> riddles;
     private final Random random;
-    public RiddleBank(){
+
+    public RiddleBank() {
         random = new Random();
         riddles = Map.of(
                 Difficulty.EASY, List.of(
                         new Riddle("Без окон без дверей — полна горница людей.", "огурец"),
                         new Riddle("Сто одёжек — все без застёжек.", "капуста"),
-                        new Riddle("Сидит дед, во сто шуб одет.","лук")
+                        new Riddle("Сидит дед, во сто шуб одет.", "лук")
                 ),
                 Difficulty.MEDIUM, List.of(
                         new Riddle("Какая река является единственной, вытекающей из озера Байкал?", "ангара"),
@@ -28,10 +29,12 @@ public class RiddleBank {
                 )
         );
     }
-    public RiddleBank(Map<Difficulty, List<Riddle>> riddles){
+
+    public RiddleBank(Map<Difficulty, List<Riddle>> riddles) {
         this.riddles = riddles;
         this.random = new Random();
     }
+
     public Riddle getRandomRiddle(Difficulty difficulty) {
         List<Riddle> list = riddles.get(difficulty);
         return list.get(random.nextInt(list.size()));
