@@ -47,6 +47,9 @@ public final class TelegramBot extends DefaultLongPollingUpdateConsumer implemen
     }
     @Override
     public void consume(Update update){
+        if (!update.hasMessage()) {
+            return;
+        }
         long chatId = update.getMessage().getChatId();
         Message msg = convertFromUpdateToMessage(update);
         logic.processMessage(msg, chatId, this);

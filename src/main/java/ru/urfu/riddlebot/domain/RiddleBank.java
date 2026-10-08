@@ -24,6 +24,10 @@ public class RiddleBank {
                 )
         );
     }
+    public RiddleBank(Map<Difficulty, List<Riddle>> riddles){
+        this.riddles = riddles;
+        this.random = new Random();
+    }
     public Riddle getRandomRiddle(Difficulty difficulty) {
         List<Riddle> list = riddles.get(difficulty);
         return list.get(random.nextInt(list.size()));

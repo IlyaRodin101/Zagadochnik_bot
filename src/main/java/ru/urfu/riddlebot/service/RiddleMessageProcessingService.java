@@ -13,6 +13,9 @@ public class RiddleMessageProcessingService implements MessageProcessingService 
     public static final String EASY_LABEL = "Легкий";
     public static final String MEDIUM_LABEL = "Средний";
     public static final String HARD_LABEL = "Сложный";
+    public static final String CHOOSE_DIFFICULTY_MESSAGE = "Выберите сложность";
+    public static final String CORRECT_ANSWER_MESSAGE = "Правильно!";
+    public static final String WRONG_ANSWER_MESSAGE = "Неправильно! Попробуй ещё раз :)";
 
     public RiddleMessageProcessingService(RiddleBank riddleBank){
         this.riddleBank = riddleBank;
@@ -26,7 +29,7 @@ public class RiddleMessageProcessingService implements MessageProcessingService 
             default -> null;
         };
         if (difficulty == null){
-            bot.sendMessage(new Message("Выберите сложность"), chatId);
+            bot.sendMessage(new Message(CHOOSE_DIFFICULTY_MESSAGE), chatId);
             return;
         }
         Riddle riddle = riddleBank.getRandomRiddle(difficulty);
@@ -36,14 +39,17 @@ public class RiddleMessageProcessingService implements MessageProcessingService 
     private void handleAnswer(Message msg,long chatId,Bot bot,UserSession session){
         Riddle currentRiddle = session.getCurrentRiddle();
         if(msg.text().toLowerCase().contains(currentRiddle.answer().toLowerCase())){
-            bot.sendMessage(new Message("Правильно!"), chatId);
+            bot.sendMessage(new Message(CORRECT_ANSWER_MESSAGE), chatId);
             session.setCurrentRiddle(null);
         }else{
-            bot.sendMessage(new Message("Неправильно! Попробуй ещё раз :)"), chatId);
+            bot.sendMessage(new Message(WRONG_ANSWER_MESSAGE), chatId);
         }
     }
     @Override
     public void processMessage(Message msg, long chatId, Bot bot) {
+        if (msg.text() == null) {
+            return;
+        }
         UserSession session = sessions.computeIfAbsent(chatId,id -> new UserSession());
         if (session.getCurrentRiddle() == null){
             handleDifficultyChoice(msg, chatId, bot, session);
