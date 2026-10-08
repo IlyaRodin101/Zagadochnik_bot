@@ -159,4 +159,20 @@ public final class RiddleMessageProcessingServiceTest {
 
         Assertions.assertTrue(dummyBot.getOutcomingMessageList().isEmpty());
     }
+    @Test
+    @DisplayName("Просьба выбрать сложность содержит кнопки сложностей")
+    void difficultyButtonsTest() {
+        send("привет", 0L);
+
+        Assertions.assertEquals(RiddleMessageProcessingService.DIFFICULTY_BUTTONS,
+                dummyBot.getOutcomingMessageList().get(0).buttons());
+    }
+
+    @Test
+    @DisplayName("Вопрос загадки отправляется без кнопок")
+    void riddleWithoutButtonsTest() {
+        send(RiddleMessageProcessingService.EASY_LABEL, 0L);
+
+        Assertions.assertTrue(dummyBot.getOutcomingMessageList().get(0).buttons().isEmpty());
+    }
 }

@@ -10,6 +10,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 import ru.urfu.riddlebot.service.Message;
 import ru.urfu.riddlebot.service.MessageProcessingService;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import java.util.List;
 
 public final class TelegramBot extends DefaultLongPollingUpdateConsumer implements Bot {
     private static final Logger LOGGER = LoggerFactory.getLogger(TelegramBot.class);
@@ -36,10 +42,28 @@ public final class TelegramBot extends DefaultLongPollingUpdateConsumer implemen
     private Message convertFromUpdateToMessage(Update update){
         return new Message(update.getMessage().getText());
     }
+    private ReplyKeyboard buildKeyboard(Message msg){
+        if (msg.buttons().isEmpty()) {
+            return ReplyKeyboardRemove.builder().removeKeyboard(true).build();
+        }
+        KeyboardRow row = new KeyboardRow();
+        for (String label : msg.buttons()){
+            row.add(new KeyboardButton(label));
+        }
+        return ReplyKeyboardMarkup.builder()
+                .keyboard(List.of(row))
+                .resizeKeyboard(true)
+                .build();
+    }
     @Override
     public void sendMessage(Message msg,long id){
+        SendMessage sendMessage = SendMessage.builder()
+                .chatId(id)
+                .text(msg.text())
+                .replyMarkup(buildKeyboard(msg))
+                .build();
         try{
-            telegramClient.execute(SendMessage.builder().text(msg.text()).chatId(id).build());
+            telegramClient.execute(sendMessage);
         } catch (TelegramApiException e){
             LOGGER.error("сообщение",e);
         }
