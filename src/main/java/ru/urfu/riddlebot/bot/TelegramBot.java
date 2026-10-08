@@ -1,4 +1,5 @@
 package ru.urfu.riddlebot.bot;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
@@ -6,15 +7,16 @@ import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
 import org.telegram.telegrambots.longpolling.util.DefaultLongPollingUpdateConsumer;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.TelegramClient;
-import ru.urfu.riddlebot.service.Message;
-import ru.urfu.riddlebot.service.MessageProcessingService;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.TelegramClient;
+import ru.urfu.riddlebot.service.Message;
+import ru.urfu.riddlebot.service.MessageProcessingService;
+
 import java.util.List;
 
 public final class TelegramBot extends DefaultLongPollingUpdateConsumer implements Bot {
@@ -30,24 +32,27 @@ public final class TelegramBot extends DefaultLongPollingUpdateConsumer implemen
         this.token = token;
         application = new TelegramBotsLongPollingApplication();
     }
-    public void start(){
-        try{
-            application.registerBot(token,this);
+
+    public void start() {
+        try {
+            application.registerBot(token, this);
             LOGGER.info("Бот запущен :)");
             Thread.currentThread().join();
         } catch (Exception e) {
-            LOGGER.error("сообщение", e);
+            LOGGER.error("Бот не запустился", e);
         }
     }
-    private Message convertFromUpdateToMessage(Update update){
+
+    private Message convertFromUpdateToMessage(Update update) {
         return new Message(update.getMessage().getText());
     }
-    private ReplyKeyboard buildKeyboard(Message msg){
+
+    private ReplyKeyboard buildKeyboard(Message msg) {
         if (msg.buttons().isEmpty()) {
             return ReplyKeyboardRemove.builder().removeKeyboard(true).build();
         }
         KeyboardRow row = new KeyboardRow();
-        for (String label : msg.buttons()){
+        for (String label : msg.buttons()) {
             row.add(new KeyboardButton(label));
         }
         return ReplyKeyboardMarkup.builder()
@@ -55,22 +60,24 @@ public final class TelegramBot extends DefaultLongPollingUpdateConsumer implemen
                 .resizeKeyboard(true)
                 .build();
     }
+
     @Override
-    public void sendMessage(Message msg,long id){
+    public void sendMessage(Message msg, long id) {
         SendMessage sendMessage = SendMessage.builder()
                 .chatId(id)
                 .text(msg.text())
                 .replyMarkup(buildKeyboard(msg))
                 .build();
-        try{
+        try {
             telegramClient.execute(sendMessage);
-        } catch (TelegramApiException e){
-            LOGGER.error("сообщение",e);
+        } catch (TelegramApiException e) {
+            LOGGER.error("Не удалось отправить сообщение", e);
         }
 
     }
+
     @Override
-    public void consume(Update update){
+    public void consume(Update update) {
         if (!update.hasMessage()) {
             return;
         }

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.urfu.riddlebot.bot.TelegramBot;
 import ru.urfu.riddlebot.domain.RiddleBank;
-import ru.urfu.riddlebot.service.MessageProcessingService;
 import ru.urfu.riddlebot.service.RiddleMessageProcessingService;
 
 public final class Main {
@@ -18,15 +17,15 @@ public final class Main {
         RiddleBank riddleBank = new RiddleBank();
         RiddleMessageProcessingService riddleMessageProcessingService = new RiddleMessageProcessingService(riddleBank);
         String token = System.getenv(BOT_TOKEN);
-        if(token == null){
+        if (token == null) {
             LOGGER.error("Отсутствует токен!");
             return;
         }
-        try{
-            TelegramBot bot = new TelegramBot(token,riddleMessageProcessingService);
+        try {
+            TelegramBot bot = new TelegramBot(token, riddleMessageProcessingService);
             bot.start();
         } catch (Exception e) {
-            LOGGER.error("сообщение",e);
+            LOGGER.error("сообщение", e);
         }
     }
 }

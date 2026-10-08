@@ -17,6 +17,7 @@
         <log4j.version>2.24.1</log4j.version>
         <telegrambots.version>10.3.0</telegrambots.version>
         <annotations.version>24.1.0</annotations.version>
+        <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -73,4 +74,29 @@
             <version>${telegrambots.version}</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <consoleOutput>true</consoleOutput>
+                    <logViolationsToConsole>true</logViolationsToConsole>
+                    <failsOnError>true</failsOnError>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 </project>
